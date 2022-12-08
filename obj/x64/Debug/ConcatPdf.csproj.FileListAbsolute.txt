@@ -1,0 +1,13 @@
+D:\Travalle\Programms\C#\ConcatPdf\master\bin\x64\Debug\ConcatPdf.exe.config
+D:\Travalle\Programms\C#\ConcatPdf\master\bin\x64\Debug\ConcatPdf.exe
+D:\Travalle\Programms\C#\ConcatPdf\master\bin\x64\Debug\ConcatPdf.pdb
+D:\Travalle\Programms\C#\ConcatPdf\master\obj\x64\Debug\ConcatPdf.csproj.AssemblyReference.cache
+D:\Travalle\Programms\C#\ConcatPdf\master\obj\x64\Debug\ConcatPdf.csproj.SuggestedBindingRedirects.cache
+D:\Travalle\Programms\C#\ConcatPdf\master\obj\x64\Debug\MainWindow.g.cs
+D:\Travalle\Programms\C#\ConcatPdf\master\obj\x64\Debug\ConcatPdf_MarkupCompile.cache
+D:\Travalle\Programms\C#\ConcatPdf\master\obj\x64\Debug\ConcatPdf_MarkupCompile.lref
+D:\Travalle\Programms\C#\ConcatPdf\master\obj\x64\Debug\MainWindow.baml
+D:\Travalle\Programms\C#\ConcatPdf\master\obj\x64\Debug\ConcatPdf.g.resources
+D:\Travalle\Programms\C#\ConcatPdf\master\obj\x64\Debug\ConcatPdf.csproj.CoreCompileInputs.cache
+D:\Travalle\Programms\C#\ConcatPdf\master\obj\x64\Debug\ConcatPdf.exe
+D:\Travalle\Programms\C#\ConcatPdf\master\obj\x64\Debug\ConcatPdf.pdb
