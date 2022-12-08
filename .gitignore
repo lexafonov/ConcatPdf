@@ -1,0 +1,10 @@
+﻿################################################################################
+# Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/ConcatPdf/FileContentIndex/45fd5de2-6b54-4b0c-a1a1-601830478188.vsidx
+/.vs/ConcatPdf/FileContentIndex/712bacc6-1b8f-48f0-8942-aef3e500af57.vsidx
+/.vs/ConcatPdf/FileContentIndex/read.lock
+/.vs/ConcatPdf/v17/.suo
+/bin/x64/Debug
+/obj/x64/Debug
