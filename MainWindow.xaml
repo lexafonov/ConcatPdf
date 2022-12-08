@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpfToolKit="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:ConcatPdf"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local:ViewModel}"
         Title="Объединение Pdf-файлов">
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
@@ -14,6 +16,9 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Количество файлов:" Grid.Row="0" Grid.Column="0"/>
+        <TextBlock Text="Количество файлов:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+        <wpfToolKit:IntegerUpDown Grid.Row="0" Grid.Column="1" Height="25" Margin="5" Minimum="2"
+                                  Increment="1" Maximum="10"
+                                  Value="{Binding KolFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </Window>
