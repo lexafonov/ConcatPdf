@@ -9,7 +9,7 @@ namespace ConcatPdf
     public partial class MainWindow : Window
     {
         [STAThread]
-        public static int Main(string[] args)
+        public static int Main()
         {
             MainWindow window = new MainWindow
             {

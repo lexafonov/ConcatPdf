@@ -7,18 +7,47 @@
         xmlns:local="clr-namespace:ConcatPdf"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:ViewModel}"
-        Title="Объединение Pdf-файлов">
-    <Grid Margin="5">
+        Title="Объединение Pdf-файлов"
+        SizeToContent="WidthAndHeight">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Количество файлов:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-        <wpfToolKit:IntegerUpDown Grid.Row="0" Grid.Column="1" Height="25" Margin="5" Minimum="2"
+        <TextBlock Text="Количество файлов:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+        <wpfToolKit:IntegerUpDown Grid.Row="0" Grid.Column="1" Height="20" Margin="5" Minimum="2"
                                   Increment="1" Maximum="10"
                                   Value="{Binding KolFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Файлы НУ для плоскостей"  Margin="5"/>
+        <DataGrid Grid.Row="1" Grid.Column="1" AutoGenerateColumns="False"  Margin="5"
+                          CanUserDeleteRows="False" 
+                          HorizontalAlignment="Center" VerticalAlignment="Top"
+                          ItemsSource="{Binding RowTableFiles}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Имя файла"
+                                            Binding="{Binding NameFile, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                            IsReadOnly="True"/>
+                <DataGridTemplateColumn Header="Открыть" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Margin="5" d:DataContext="{d:DesignInstance Type=local:RowTableFiles}"
+                                            Content="{Binding ButtonLabelFilePl}" 
+                                            Command="{Binding BaseCommandButton}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Данные загружены?" IsReadOnly="True" 
+                                            Binding="{Binding IsLoadStr, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="2" Grid.Column="1" Content="Объединить" Height="30" Margin="5" Command="{Binding BaseCommandConcat}"/>
     </Grid>
+
 </Window>
