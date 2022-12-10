@@ -1,9 +1,9 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using System.IO;
 
 namespace ConcatPdf
 {
@@ -11,7 +11,7 @@ namespace ConcatPdf
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private readonly ConcatModel _concatModel = new ConcatModel();
+        private static ConcatModel _concatModel = new ConcatModel();
         public ViewModel()
         {
             KolFiles = _concatModel.kolFiles;
@@ -25,24 +25,31 @@ namespace ConcatPdf
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(KolFiles)));
 
                 RowTableFilesCollection.Clear();
+                _concatModel.pathPdfFiles = new string[_concatModel.kolFiles];
                 RowTableFilesCollection = new ObservableCollection<RowTableFiles>();
-                for (int numPl = 0; numPl < _concatModel.kolFiles; ++numPl)
+                for (int numF = 0; numF < _concatModel.kolFiles; ++numF)
                 {
-                    var pl = numPl;
-                    RowTableFilesCollection.Add(new RowTableFiles("Не загружен", $"Файл {numPl + 1}",
+                    var numFile = numF;
+                    RowTableFilesCollection.Add(new RowTableFiles("Не загружен", $"Файл {numF + 1}",
                         new BaseCommand(
                             (o) =>
                             {
-                                var ofd = new OpenFileDialog
+                                var tuple = _concatModel.OpenAndReadPdf(numFile);
+                                if(tuple.res != 0)
                                 {
-                                    Filter = @"pdf|*.pdf"
-                                };
-                                if (ofd.ShowDialog() ?? false)
-                                {
-                                    RowTableFilesCollection[pl].IsLoad = true;
+                                    MessageBox.Show(tuple.str + "_concatModel.OpenAndReadPdf");
+                                    return;
                                 }
+                                RowTableFilesCollection[numFile].IsLoad = true;
+                                FileInfo fInfo = new FileInfo(_concatModel.pathPdfFiles[numFile]);
+                                RowTableFilesCollection[numFile].NameFile = fInfo.Name;
+                                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(fInfo.Name)));
+                                //Проверить, возможно ли уже объединение файлов
+                                BaseCommandConcat?.OnCanExecuteChanged();
                             })));
                 }
+
+                BaseCommandConcat?.OnCanExecuteChanged();
             }
         }
 
@@ -55,22 +62,25 @@ namespace ConcatPdf
             {
                 _RowTableFilesCollection = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RowTableFilesCollection)));
+
+                BaseCommandConcat?.OnCanExecuteChanged();
             }
         }
 
         public BaseCommand BaseCommandConcat { get; } = new BaseCommand(
             (o) =>
             {
-                SaveFileDialog opf = new SaveFileDialog
+                var tuple = _concatModel.SaveConcatPdf();
+                if (tuple.res != 0)
                 {
-                    Filter = @"pdf|*.pdf"
-                };
-                if (opf.ShowDialog() ?? false)
-                {
-                    var file = opf.FileName;
-
-                    MessageBox.Show("Объединение завершено успешно.");
+                    MessageBox.Show(tuple.str + "_concatModel.SaveConcatPdf");
+                    return;
                 }
+                MessageBox.Show("Объединение завершено успешно.");             
+            }, 
+            (o) =>
+            {
+                return _concatModel.IsCorretPaths();
             });
 
     }
@@ -83,7 +93,16 @@ namespace ConcatPdf
             BaseCommandButton = command;
             IsLoad = false;
         }
-        public string NameFile { get; set; }
+        private string _nameFile;
+        public string NameFile 
+        {
+            get => _nameFile;
+            set
+            {
+                _nameFile = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NameFile)));
+            }
+        }
         public string ButtonLabelFilePl { get; set; }
         public BaseCommand BaseCommandButton { get; set; }
         public string IsLoadStr { get; set; }
@@ -123,6 +142,11 @@ namespace ConcatPdf
         public void Execute(object parameter)
         {
             _action?.Invoke(parameter);
+        }
+
+        public void OnCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, null);
         }
     }
 }

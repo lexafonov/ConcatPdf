@@ -28,7 +28,7 @@
         <DataGrid Grid.Row="1" Grid.Column="1" AutoGenerateColumns="False"  Margin="5"
                           CanUserDeleteRows="False" 
                           HorizontalAlignment="Center" VerticalAlignment="Top"
-                          ItemsSource="{Binding RowTableFiles}">
+                          ItemsSource="{Binding RowTableFilesCollection}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Имя файла"
                                             Binding="{Binding NameFile, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
