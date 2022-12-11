@@ -12,9 +12,11 @@ namespace ConcatPdf
         public event PropertyChangedEventHandler PropertyChanged;
 
         private static ConcatModel _concatModel = new ConcatModel();
-        public ViewModel()
+        private static Window _own;
+        public ViewModel(Window own)
         {
             KolFiles = _concatModel.kolFiles;
+            _own = own;
         }
         public int KolFiles
         {
@@ -35,7 +37,7 @@ namespace ConcatPdf
                             (o) =>
                             {
                                 var tuple = _concatModel.OpenAndReadPdf(numFile);
-                                if(tuple.res != 0)
+                                if (tuple.res != 0)
                                 {
                                     MessageBox.Show(tuple.str + "_concatModel.OpenAndReadPdf");
                                     return;
@@ -68,16 +70,18 @@ namespace ConcatPdf
         }
 
         public BaseCommand BaseCommandConcat { get; } = new BaseCommand(
-            (o) =>
+            async (o) =>
             {
-                var tuple = _concatModel.SaveConcatPdf();
+
+                var tuple = await _concatModel.SaveConcatPdf(_own);
+                
                 if (tuple.res != 0)
                 {
                     MessageBox.Show(tuple.str + "_concatModel.SaveConcatPdf");
                     return;
                 }
-                MessageBox.Show("Объединение завершено успешно.");             
-            }, 
+                MessageBox.Show("Объединение завершено успешно.");
+            },
             (o) =>
             {
                 return _concatModel.IsCorretPaths();
@@ -94,7 +98,7 @@ namespace ConcatPdf
             IsLoad = false;
         }
         private string _nameFile;
-        public string NameFile 
+        public string NameFile
         {
             get => _nameFile;
             set

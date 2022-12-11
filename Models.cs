@@ -2,6 +2,10 @@
 using Microsoft.Win32;
 using System;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace ConcatPdf
 {
@@ -43,20 +47,38 @@ namespace ConcatPdf
             return ValueTuple.Create(-1, "Файл не выбран.");
         }
 
-        public (int res, string str) SaveConcatPdf()
+        async public Task<(int res, string str)> SaveConcatPdf(Window own)
         {
             SaveFileDialog opf = new SaveFileDialog
             {
-                Filter = @"pdf|*.pdf"
+                Filter = @"pdf|*.pdf",
+                FileName = "Concat",
             };
             if (opf.ShowDialog() ?? false)
             {
+                Window ojid = new Window()
+                {
+                    Title = "Подождите... Идет объединение файлов.",
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                    Content = new TextBlock()
+                    {
+                        Text = "Подождите... Идет объединение файлов.",
+                        FontSize = 20,
+                        FontWeight = FontWeights.Bold,
+                        Margin = new Thickness(5),
+                    },
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                    Owner = own
+                };
+                ojid.Show();
                 var file = opf.FileName;
+                await Task.Run(() =>
+                {
+                    PdfFileEditor pdfEditor = new PdfFileEditor();
 
-                PdfFileEditor pdfEditor = new PdfFileEditor();
-
-                pdfEditor.Concatenate(pathPdfFiles, file);
-
+                    pdfEditor.Concatenate(pathPdfFiles, file);
+                });
+                ojid.Close();
                 return ValueTuple.Create(0, string.Empty);
             }
             return ValueTuple.Create(-1, "Выходной путь не выбран.");

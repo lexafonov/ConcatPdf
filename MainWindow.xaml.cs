@@ -11,10 +11,10 @@ namespace ConcatPdf
         [STAThread]
         public static int Main()
         {
-            MainWindow window = new MainWindow
-            {
-                DataContext = new ViewModel()
-            };
+            MainWindow window = new MainWindow();
+            var viewModel = new ViewModel(window);
+            window.DataContext = viewModel;
+            
             window.ShowDialog();
             return 0;
         }

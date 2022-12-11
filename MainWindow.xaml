@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:ViewModel}"
         Title="Объединение Pdf-файлов"
+        WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -24,7 +25,7 @@
                                   Increment="1" Maximum="10"
                                   Value="{Binding KolFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <Label Grid.Row="1" Grid.Column="0" Content="Файлы НУ для плоскостей"  Margin="5"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Файлы PDF"  Margin="5"/>
         <DataGrid Grid.Row="1" Grid.Column="1" AutoGenerateColumns="False"  Margin="5"
                           CanUserDeleteRows="False" 
                           HorizontalAlignment="Center" VerticalAlignment="Top"
